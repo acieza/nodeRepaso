@@ -12,10 +12,14 @@ router.get('/', async (req,res) =>{
     }
 })
 
-router.get('/BuscaNom/:nombre', async (req,res) =>{
+router.get('/BuscaNom/:valor', async (req,res) =>{
     try{
         const misRecetas = await Receta.find(
-            {'nombre' : {'$regex' : req.params.nombre, '$options': "i"}}
+            {$or:[
+            {'nombre' : {'$regex' : req.params.valor, '$options': "i"}},
+            {'detalle' : {'$regex' : req.params.valor, '$options': "i"}},
+            
+            ]}
         );
         res.json(misRecetas);
     }catch{
